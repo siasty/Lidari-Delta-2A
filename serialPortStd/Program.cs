@@ -41,7 +41,7 @@ namespace serialPortStd
                 {
                     Console.WriteLine($"Port {name} is open.");
                 }
-                port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler2);
+                port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
 
                 Console.ReadKey();
 
@@ -53,7 +53,7 @@ namespace serialPortStd
 
         }
 
-        private static void DataReceivedHandler2(object sender, SerialDataReceivedEventArgs e)
+        private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             if (sender != null)
             {
@@ -164,137 +164,5 @@ namespace serialPortStd
             }
         }
 
-
-        private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
-        {
-            SerialPort port = (SerialPort)sender;
-
-            UInt16 crcCheckNum = 0, calcchecksum;
-
-            var pointList = new List<FramePoint>();
-            int bytes = port.BytesToRead;
-            byte[] buffer = new byte[bytes];
-
-
-            if (bytes > 1)
-            {
-                port.Read(buffer, 0, bytes);
-                Console.WriteLine();
-                Console.WriteLine(BitConverter.ToString(buffer));
-                Console.WriteLine();
-                #region test
-                //unsafe
-                //{
-                //    UInt16 frameLens = (ushort)((buffer[1] << 8) | buffer[2]);
-
-                //    fixed (byte* pointerToFirst = &buffer[0])
-                //    {
-                //        crcCheckNum = (ushort)(pointerToFirst + frameLens);
-                //        var angleRange = (buffer[11] << 8) | buffer[12];
-
-
-                //        if (buffer[3] > 0)
-                //            calcchecksum = Helper._checksum(pointerToFirst, frameLens);
-                //        else
-                //            calcchecksum = Helper.Crc16(pointerToFirst, frameLens);
-                //        if (crcCheckNum == calcchecksum)
-                //        {
-
-                //        }
-                //        Console.WriteLine(crcCheckNum);
-                //        Console.WriteLine(calcchecksum);
-                //    }
-                //}
-                #endregion
-                string hexBuff = "";
-
-                //foreach (var item in buffer)
-                //{
-                //    count++;
-
-                //    var hex = item.ToString("X2");
-                //    if (hex.Contains("AA"))
-                //    {
-                //        count = 1;
-                //        hexFrame = new HexFrameModel();
-                //        circle++;
-                //        if (circle > 16) { circle = 1; }
-                //        hexFrame.FrameHeader = hex + "-" + circle;
-                //        Console.WriteLine();
-                //        Console.WriteLine("Data receive at time " + DateTime.Now.TimeOfDay + " circle: " + ((circle / 16) * 100) + " %");
-                //    }
-                //    #region test2
-                //    //if (count == 2 || count == 3)
-                //    //{
-                //    //    hexBuff += hex;
-                //    //    if (count == 3)
-                //    //    {
-                //    //        var uIntValue = UInt16.Parse(hexBuff, System.Globalization.NumberStyles.HexNumber);
-                //    //        hexFrame.FrameLength += uIntValue;
-                //    //        hexBuff = "";
-                //    //    }
-                //    //}
-
-                //    //if (count == 4) { hexFrame.ProtocolVersion = hex; }
-                //    //if (count == 5) { hexFrame.FrameType = hex; }
-                //    //if (count == 6) { hexFrame.CommandWord = hex; }
-                //    //if (count == 7 || count == 8)
-                //    //{
-                //    //    hexBuff += hex;
-                //    //    if (count == 8)
-                //    //    {
-                //    //        var uIntValue = UInt16.Parse(hexBuff, System.Globalization.NumberStyles.HexNumber);
-                //    //        hexFrame.EffectiveDataLength = (uIntValue - 5) / 3;
-                //    //        hexBuff = "";
-                //    //    }
-                //    //}
-                //    //if (count == 9)
-                //    //{
-                //    //    var uIntValue = UInt16.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                //    //    hexFrame.RadarSpeed = uIntValue * 0.05;
-                //    //}
-                //    //if (count == 10 || count == 11)
-                //    //{
-                //    //    hexBuff += hex;
-                //    //    if (count == 11)
-                //    //    {
-                //    //        hexFrame.ZeroOffset = hexBuff;
-                //    //        hexBuff = "";
-                //    //    }
-                //    //}
-                //    //if (count == 12 || count == 13)
-                //    //{
-                //    //    hexBuff += hex;
-                //    //    if (count == 13)
-                //    //    {
-                //    //        var uIntValue = UInt16.Parse(hexBuff, System.Globalization.NumberStyles.HexNumber);
-                //    //        hexFrame.StartingAngle = uIntValue * 0.01;
-                //    //        hexBuff = "";
-                //    //    }
-                //    //}
-                //    //if (count >= 14 && count <= hexFrame.EffectiveDataLength)
-                //    //{
-                //    //    for (int i = 1; i < hexFrame.EffectiveDataLength; i++)
-                //    //    {
-                //    //        hexFrame.framePoint = pointList.Add(
-                //    //          new FramePoint { signal = i, signalVale = "" }
-                //    //        );
-                //    //    }
-                //    //}
-                //    #endregion
-                //}
-            }
-
-            //if (hexFrame != null && !hexFrame.IsEmpty())
-            //{
-            //    Console.WriteLine();
-            //    Console.WriteLine(" Frame header " + hexFrame.FrameHeader);
-            //    Console.WriteLine(" Frame lenght " + hexFrame.FrameLength);
-            //    Console.WriteLine(" effective Data length " + hexFrame.EffectiveDataLength);
-            //    Console.WriteLine(" Radar Speed " + hexFrame.RadarSpeed);
-            //    Console.WriteLine(" Starting Angle " + hexFrame.StartingAngle);
-            //    Console.WriteLine();
-            //}
-        }
     }
 }
